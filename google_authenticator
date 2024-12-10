@@ -1,0 +1,24 @@
+import pyotp
+import time
+
+# 1. Generate a Secret Key
+secret = pyotp.random_base32()
+print(f"Secret Key: {secret}")
+
+# 2. Initialize TOTP with the Secret Key
+totp = pyotp.TOTP(secret)
+
+# 3. Generate a TOTP Code
+current_code = totp.now()
+print(f"Current OTP Code: {current_code}")
+
+# 4. Verify the Code (User Input)
+user_code = input("Enter the OTP code: ")
+if totp.verify(user_code):
+    print("OTP is valid!")
+else:
+    print("Invalid OTP. Please try again.")
+
+# 5. Optional: Show QR Code URL (for use with authenticator apps)
+qr_code_url = totp.provisioning_uri(name="YourAppName", issuer_name="YourCompany")
+print(f"Scan this QR Code URL: {qr_code_url}")
